@@ -37,7 +37,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_dramatiq',
+    'app',
 ]
+
+DRAMATIQ_BROKER = {
+    'BROKER': 'dramatiq.brokers.redis.RedisBroker',
+    'OPTIONS': {
+        'url': 'redis://localhost:6379/0',
+    },
+    'MIDDLEWARE': [
+        'dramatiq.middleware.Prometheus',
+        'dramatiq.middleware.AgeLimit',
+        'dramatiq.middleware.TimeLimit',
+        'dramatiq.middleware.Callbacks',
+        'dramatiq.middleware.Retries',
+        'django_dramatiq.middleware.AdminMiddleware',
+        'django_dramatiq.middleware.DbConnectionsMiddleware',
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,7 +95,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    },
 }
 
 
