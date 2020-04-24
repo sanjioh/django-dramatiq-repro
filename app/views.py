@@ -1,3 +1,14 @@
-from django.shortcuts import render
+from uuid import uuid4
 
-# Create your views here.
+from django.http import response
+
+from .tasks import a_task
+
+
+def repro(request):
+    a_task.send(
+        {
+            'value': str(uuid4()),
+        },
+    )
+    return response.HttpResponse()
