@@ -10,8 +10,9 @@ class Klass:
 
     @classmethod
     def fromdict(cls, attrs):
-        attrs['value'] = UUID(attrs['value'])
-        return cls(**attrs)
+        new_attrs = attrs.copy()
+        new_attrs['value'] = UUID(attrs['value'])
+        return cls(**new_attrs)
 
 
 @dramatiq.actor
